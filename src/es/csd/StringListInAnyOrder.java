@@ -1,4 +1,8 @@
 package es.csd;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.hamcrest.Description;
@@ -6,29 +10,41 @@ import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
 import org.junit.internal.matchers.TypeSafeMatcher;
 
-
 public class StringListInAnyOrder extends TypeSafeMatcher<List<String>> {
 
-    List<String> expected;
+	List<String> expected;
 
-    public StringListInAnyOrder(List<String> expected) {
-        this.expected = expected;
-    }
+	public StringListInAnyOrder(List<String> expected) {
+		this.expected = expected;
+	}
 
-    @Override
-    public void describeTo(Description description) {
-        description.appendText("list ignoring order ");
-        description.appendValue(expected);
-    }
+	@Override
+	public void describeTo(Description description) {
+		description.appendText("list ignoring order ");
+		description.appendValue(expected);
+	}
 
-    @Override
+	@Override
 	public boolean matchesSafely(List<String> list) {
-		return false;
-    }
+		if (this.expected.size() != list.size()) {
+			return false;
+		}
+		List<String> _expected = new ArrayList<String>( expected);
+		List<String> _list = new ArrayList<String>( list);
+		Collections.sort(_expected);
+		Collections.sort(_list);
+		for(int i =0 ; i< _list.size() ; i++){
+			if( ! _list.get(i).equals(_expected.get(i) ) ){
+				return false;
+			}
+		}
+		return true;
+	}
 
-    @Factory
-    public static Matcher<List<String>> stringListInAnyOrder( List<String> expected ) {
-        return new StringListInAnyOrder(expected);
-    }
+	@Factory
+	public static Matcher<List<String>> stringListInAnyOrder(
+			List<String> expected) {
+		return new StringListInAnyOrder(expected);
+	}
 
 }
