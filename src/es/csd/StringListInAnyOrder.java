@@ -1,7 +1,6 @@
 package es.csd;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -29,16 +28,11 @@ public class StringListInAnyOrder extends TypeSafeMatcher<List<String>> {
 		if (this.expected.size() != list.size()) {
 			return false;
 		}
-		List<String> _expected = new ArrayList<String>( expected);
-		List<String> _list = new ArrayList<String>( list);
+		List<String> _expected = new ArrayList<String>(expected);
+		List<String> _list = new ArrayList<String>(list);
 		Collections.sort(_expected);
 		Collections.sort(_list);
-		for(int i =0 ; i< _list.size() ; i++){
-			if( ! _list.get(i).equals(_expected.get(i) ) ){
-				return false;
-			}
-		}
-		return true;
+		return _expected.equals(_list);
 	}
 
 	@Factory
